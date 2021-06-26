@@ -6,14 +6,21 @@
 //
 
 import UIKit
+import RealmSwift
 
 class TaskTableViewController: UITableViewController {
 
+    var results:Results<Task>!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let nib = UINib(nibName: "TaskCell", bundle: nil)
         self.tableView.register(nib, forCellReuseIdentifier: "\(type(of: TaskCell.self))")
+        
+        let realm = try! Realm()
+        
+        results = realm.objects(Task.self)
     }
 
     // MARK: - Table view data source
@@ -23,14 +30,16 @@ class TaskTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 50
+        return results.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(type(of: TaskCell.self))", for: indexPath) as! TaskCell
         
-        cell.setup()
+        let task = results[indexPath.row]
+        
+        cell.setup(task: task)
 
         return cell
     }

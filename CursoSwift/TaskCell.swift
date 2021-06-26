@@ -17,8 +17,8 @@ class TaskCell: UITableViewCell {
     }
 
     
-    func setup() {
-        title.text = "Tarea de ejemplo"
+    func setup(task:Task) {
+        title.text = task.title
     }
     
 }
